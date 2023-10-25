@@ -6,128 +6,121 @@ import { ethers } from 'ethers';
 function App() {
   const [cart, setCart] = useState([]);
   const [picturesData, setPicturesData] = useState([
-    { id: 1, name: 'Tulips', price: 1, image: '/images/tulip.jpg' },
-    { id: 2, name: 'Hydrangea', price: 1, image: '/images/hydrangea.jpg' },
-    { id: 3, name: 'Roses', price: 1, image: '/images/roses.jpg' },
-    { id: 4, name: 'Lily', price: 1, image: '/images/lily.jpg' },
-    { id: 5, name: 'Daisy', price: 1, image: '/images/daisy.jpg' },
-    { id: 6, name: 'Carnation', price: 1, image: '/images/carnation.jpg' },
-    { id: 7, name: 'Orchid', price: 1, image: '/images/orchid.jpg' },
-    { id: 8, name: 'Peony', price: 1, image: '/images/peonies.jpg' }
+    { id: 1, name: 'Tulips', price: 0.025, image: '/images/tulip.jpg' },
+    { id: 2, name: 'Hydrangea', price: 0.015, image: '/images/hydrangea.jpg' },
+    { id: 3, name: 'Roses', price: 0.0006, image: '/images/roses.jpg' },
+    { id: 4, name: 'Lily', price: 0.08, image: '/images/lily.jpg' },
+    { id: 5, name: 'Daisy', price: 0.004, image: '/images/daisy.jpg' },
+    { id: 6, name: 'Carnation', price: 0.01, image: '/images/carnation.jpg' },
+    { id: 7, name: 'Orchid', price: 0.003, image: '/images/orchid.jpg' },
+    { id: 8, name: 'Peony', price: 0.005, image: '/images/peonies.jpg' }
   ]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const contractAddress = '0xb3097F60E3CE874365A1EB481A7037Cf22DA80a2';
   const contractAbi = [
     {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "buyer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
-    ],
-    "name": "PicturePurchased",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "picturePrice",
-        "type": "uint256"
-      }
-    ],
-    "name": "buyPicture",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "cart",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "pay",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalPrice",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-];
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "buyer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "PicturePurchased",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "picturePrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "buyPicture",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "cart",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pay",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }  ];
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-
-  
 
   const removeFromWebsite = (pictureId) => {
     setPicturesData((prevPicturesData) =>
       prevPicturesData.filter((picture) => picture.id !== pictureId)
     );
   };
-  const addToCart = async (picture) => {
-    try {
-      await contract.buyPicture(picture.price);
-      setCart([...cart, picture]);
-      setTotalPrice(totalPrice + picture.price);
-    } catch (error) {
-      console.error('Error buying picture:', error);
-    }
+
+  const addToCart = (picture) => {
+    setCart([...cart, picture]);
+    setTotalPrice(totalPrice + picture.price);
   };
 
   const pay = async () => {
@@ -149,13 +142,6 @@ function App() {
       alert('Payment failed. Please check your balance and try again.');
     }
   };
- 
-  
-  
-  
-
-  
-  
 
   useEffect(() => {
     async function connectToMetamask() {
@@ -167,7 +153,6 @@ function App() {
         }
       }
     }
-
     connectToMetamask();
   }, []);
 
@@ -176,7 +161,7 @@ function App() {
       <h1>Ferns and Petals</h1>
       <div className="pictures">
         {picturesData.map((picture) => (
-          <Picture key={picture.id} picture={picture} onBuyClick={addToCart} />
+          <Picture key={picture.id} picture={picture} onBuyClick={() => addToCart(picture)} />
         ))}
       </div>
       <div className="cart">
